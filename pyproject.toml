@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "photo-trip-timeline"
+version = "0.1.0"
+description = "Turn a geotagged Apple Photos library into an automatic travel timeline."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Joowon Lee" }]
+keywords = ["photos", "exif", "gps", "travel", "timeline", "osxphotos"]
+
+# osxphotos tracks Apple's private Photos SQLite schema, so we pin a tested
+# range rather than an open-ended floor.
+dependencies = [
+    "osxphotos>=0.76,<0.80",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+phototrips = "phototrips.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/joowonlee/photo-trip-timeline"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/phototrips"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
