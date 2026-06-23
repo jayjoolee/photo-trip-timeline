@@ -1,0 +1,30 @@
+name: i18n sync check
+
+# Warns when a PR edits the canonical English README.md without touching the
+# translations, so README.zh-CN.md / README.ko.md don't silently go stale.
+# Non-blocking: it comments / annotates but does not fail the build.
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+
+jobs:
+  check-translations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Warn if translations untouched
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          changed="$(git diff --name-only "$base" "$head")"
+          if echo "$changed" | grep -qx "README.md"; then
+            for t in README.zh-CN.md README.ko.md; do
+              if ! echo "$changed" | grep -qx "$t"; then
+                echo "::warning file=$t::README.md changed but $t was not updated — translation may be stale."
+              fi
+            done
+          fi

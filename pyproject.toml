@@ -25,7 +25,10 @@ dev = ["pytest>=7"]
 phototrips = "phototrips.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/joowonlee/photo-trip-timeline"
+Homepage = "https://github.com/jayjoolee/photo-trip-timeline"
+Repository = "https://github.com/jayjoolee/photo-trip-timeline"
+Issues = "https://github.com/jayjoolee/photo-trip-timeline/issues"
+Changelog = "https://github.com/jayjoolee/photo-trip-timeline/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/phototrips"]

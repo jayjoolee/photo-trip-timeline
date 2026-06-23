@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import re
 
+from . import i18n
 from .model import Trip
 from .places import day_breakdown, simplify_sequence
 
@@ -20,17 +21,18 @@ class CoordinateLeak(AssertionError):
     """Raised if rendered markdown contains a coordinate-shaped token."""
 
 
-def render_timeline(trips: list[Trip]) -> str:
-    lines: list[str] = ["# Photo Travel Timeline", ""]
+def render_timeline(trips: list[Trip], lang: str = "en") -> str:
+    lang = i18n.normalize_lang(lang)
+    lines: list[str] = [f"# {i18n.title(lang)}", ""]
     if not trips:
-        lines.append("_여행으로 묶인 사진이 없습니다._")
+        lines.append(i18n.empty(lang))
         return "\n".join(lines) + "\n"
 
     for t in trips:  # already reverse-chronological
         span = _span(t)
         header = (
             f"## {t.title} — {span} "
-            f"({t.duration_days}일, {t.photo_count_total}장)"
+            f"({i18n.duration(lang, t.duration_days, t.photo_count_total)})"
         )
         lines.append(header)
 
@@ -40,7 +42,8 @@ def render_timeline(trips: list[Trip]) -> str:
         for day in day_breakdown(t):
             places = ", ".join(day["places"]) or "—"
             lines.append(
-                f"- {day['day']}일차 ({day['date']:%m.%d}): {places} — {day['photo_count']}장"
+                f"- {i18n.day_label(lang, day['day'])} ({day['date']:%m.%d}): "
+                f"{places} — {i18n.photos(lang, day['photo_count'])}"
             )
         lines.append("")
 

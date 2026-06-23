@@ -54,6 +54,9 @@ class Config:
     home_dominance: float = 2.0    # winning cluster must beat runner-up by this
     home_min_nights: int = 3       # ...and have at least this many night points
 
+    # Output
+    lang: str = "en"               # timeline.md structural language: en | ko | zh
+
     # Privacy
     no_coords: bool = False        # if True, never emit any numeric coordinate
     include_names: bool = False    # opt-in person names into trips.json

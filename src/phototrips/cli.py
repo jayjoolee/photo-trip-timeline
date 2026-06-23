@@ -36,6 +36,10 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Start date a home becomes effective (handles relocation)")
     p.add_argument("--home-until", type=_parse_date, action="append", default=[],
                    help="End date a home stops being effective")
+    p.add_argument("--demo", action="store_true",
+                   help="Print a sample timeline from synthetic data (no Photos library needed)")
+    p.add_argument("--lang", choices=["en", "ko", "zh"], default="en",
+                   help="Language for timeline.md structural words (default: en)")
     p.add_argument("--no-coords", action="store_true",
                    help="Emit zero numeric coordinates anywhere (place names only)")
     p.add_argument("--include-names", action="store_true",
@@ -55,7 +59,12 @@ def _user_homes(args) -> list[HomeWindow]:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
 
-    cfg = Config(no_coords=args.no_coords, include_names=args.include_names)
+    if args.demo:
+        from .demo import render_demo
+        print(render_demo(args.lang))
+        return 0
+
+    cfg = Config(no_coords=args.no_coords, include_names=args.include_names, lang=args.lang)
     if args.since:
         cfg.from_date = args.since
 
@@ -80,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
 
-    timeline = render_timeline(result.trips)
+    timeline = render_timeline(result.trips, lang=cfg.lang)
     (out / "timeline.md").write_text(timeline, encoding="utf-8")
 
     photos_by_uuid = {p.uuid: p for p in points if p.has_gps}
