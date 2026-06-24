@@ -98,8 +98,24 @@ It writes two files:
 
 - **`timeline.md`** — a shareable, human-readable timeline. **Place names only —
   never coordinates**, so it's safe to paste into a blog draft.
-- **`trips.json`** — a structured record (gitignored) meant to feed a later
-  blog-draft generator.
+- **`trips.json`** — a structured record (gitignored) that feeds the blog-draft step.
+
+### Blog drafts
+
+`phototrips draft` turns a trip into a **prompt pack** — a Markdown file bundling
+the trip's facts (dates, day-by-day route, notable places, which photos to place)
+with a writing-style guide, ready to paste into Claude / ChatGPT for a draft. No
+API key required, and the pack carries place names only — never coordinates.
+
+```bash
+phototrips draft --trip auto                 # the most-photographed trip
+phototrips draft --trip 2025-02-24-rome       # a specific trip by id
+phototrips draft --all --style my-voice.md    # every trip, in your own style
+phototrips draft --lang en                     # pack language (ko | en; default ko)
+```
+
+Bring your own voice with `--style path/to/your-style.md`; the built-in default
+lives in `styles/default.md`. Packs are written to `output/drafts/` (gitignored).
 
 ## Privacy by design
 
@@ -154,10 +170,8 @@ PRs** — reproduce with `phototrips --demo` or the synthetic fixtures in `tests
 
 ## Roadmap
 
-- **Phase 2 — blog drafts.** `trips.json` is designed as the contract for a
-  follow-on step that turns each trip (plus representative photos) into a
-  blog-post draft in your own voice. The JSON already carries what it needs
-  (re-localizable place names, day-by-day structure, photo UUIDs, reliability signals).
+- **Blog drafts** ✅ — `phototrips draft` ships now (see above). Next: optional
+  direct LLM generation when an API key is configured, and photo export per trip.
 - Localized trip *titles* (currently English), optional map output (`folium`), PyPI release.
 
 ## License

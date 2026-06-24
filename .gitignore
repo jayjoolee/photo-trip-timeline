@@ -5,6 +5,9 @@ trips.json
 *.photoslibrary/
 config.toml
 
+# Personal writing-style files (your own voice stays private)
+styles/personal-*.md
+
 # Tooling / session state
 .omc/
 .DS_Store

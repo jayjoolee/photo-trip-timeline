@@ -7,6 +7,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
 ### Added
+- `phototrips draft` (Phase 2): turn a trip in `trips.json` into a paste-ready
+  blog-draft *prompt pack* — trip facts + a swappable writing-style guide for an
+  LLM. Place names only, no coordinates. `--trip`, `--all`, `--style`, `--lang`.
 - Localized `timeline.md` output (`--lang en|ko|zh`); English is the default.
 - `phototrips --demo` prints a sample timeline from synthetic data (no Photos
   library needed) — also powers the README demo GIF.
